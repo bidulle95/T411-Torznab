@@ -7,7 +7,7 @@ var userName = config.username;
 var userPass = config.password;
 var applicationPort = config.listenPort;
 
-// Require 
+// Require
 var path = require('path');
 var _ = require('underscore');
 var express = require ('express');
@@ -34,8 +34,8 @@ var DEFAULT_LIMIT = 50;
 var TVRAGE_CACHE_MINS = 300; // 5Hours
 
 // System variables
-var baseUrl = "http://api.t411.ch";
-var baset411 = "https://www.t411.ch";
+var baseUrl = "http://api.t411.li";
+var baset411 = "https://www.t411.li";
 var userToken = ""; // Holds the user token for the T411 API
 
 var _T411_CatTVShow = {name:"Série TV", idCat : 0};
@@ -55,7 +55,7 @@ function _TorznabServerPresentation(res)
 	var xmlString = {
 		'caps':
 			[
-			{'server':{_attr:{'version':'1.0','title':'T411 Torznab','image':baset411+'/themes/blue/images/logo.png'}}}, 
+			{'server':{_attr:{'version':'1.0','title':'T411 Torznab','image':baset411+'/themes/blue/images/logo.png'}}},
 			{'limits':{_attr:{'max':'100','default':DEFAULT_LIMIT}}},
 			{'registration':{_attr:{'available':'no','open':'no'}}},
 				{'searching':[
@@ -121,23 +121,23 @@ function reponseSearch(error, response, body)
 					}
 					torrentList.push(_toTorznabElement(result, context.thisHostName));
 				});
-				_logger.debug("Got "+torrentList.length+" torrents");	
+				_logger.debug("Got "+torrentList.length+" torrents");
 				xmlString = xml({
 					'rss':
-						[	
+						[
 						{_attr:{'version':'2.0','xmlns:torznab':'http://torznab.com/schemas/2015/feed'}},
 						{'channel':[
-							{'title':'T411 Torznab'}, 
-							{'description':'T411 Torznab search result for "'+jsonResp.query+'"'}, 
+							{'title':'T411 Torznab'},
+							{'description':'T411 Torznab search result for "'+jsonResp.query+'"'},
 							{'torznab:response':
 								{_attr:{
 										   'offset':jsonResp.offset,
 										   'total':jsonResp.total
 									   }
 								}
-							}, 
+							},
 						].concat(torrentList)
-						}	
+						}
 						]
 				});
 			}
@@ -148,8 +148,8 @@ function reponseSearch(error, response, body)
 						[
 						{_attr:{'version':'2.0','xmlns:torznab':'http://torznab.com/schemas/2015/feed'}},
 						{'channel':[
-							{'title':'T411 Torznab'}, 
-							{'description':'T411 Torznab search result'}, 
+							{'title':'T411 Torznab'},
+							{'description':'T411 Torznab search result'},
 							{'torznab:response':{_attr:{'offset':'0','total':'0'}}}
 						]
 						}
@@ -166,8 +166,8 @@ function reponseSearch(error, response, body)
 					{_attr:{'version':'2.0','xmlns:torznab':'http://torznab.com/schemas/2015/feed'}},
 					{'channel':
 						[
-						{'title':'T411 Torznab'}, 
-						{'description':'T411 Torznab search result'}, 
+						{'title':'T411 Torznab'},
+						{'description':'T411 Torznab search result'},
 						{'torznab:response':{_attr:{'offset':'0','total':'0'}}}
 						]
 					}
@@ -193,9 +193,9 @@ function research(urlSearch,callback,originalQuery)
 		headers:{
 			'Authorization':userToken
 		}
-	}; 
+	};
 	_logger.debug(requestData);
-	request (requestData,callback); 
+	request (requestData,callback);
 }
 function researchTvRage(show,context) {
 	var showName = show['Showinfo']['showname'];
@@ -203,10 +203,10 @@ function researchTvRage(show,context) {
 	showName = showName.replace(/\([0-9]*\)/gmi, "").trim();
 	showName = showName.replace(/\((US|FR|ES)\)/gmi, "").trim();
 	showName = showName.replace(/['|"](s)*/gmi, "").trim();
-	
+
 	_logger.debug("Clean Name : "+showName);
 	var query = (context.req.query.q) ? context.req.query.q : showName;
-	
+
 	if(context.req.query.season)
 	{
 		var seasonNumber = parseInt(context.req.query.season,10);
@@ -233,7 +233,7 @@ function tvMazeResult(err,show)
 			_logger.warn("Error from tvMaze 404 Not Found !");
 			context.res.contentType ('text/plain');
 			context.res.status (404);
-			//tvmaze.showSearchName(req.query.name, tvRageResult);	
+			//tvmaze.showSearchName(req.query.name, tvRageResult);
 		}
 		else
 			tvmaze.showInfoTvMaze(req.query.tvmazeid, tvRageResult);
@@ -242,7 +242,7 @@ function tvMazeResult(err,show)
 	{
 		_logger.debug("Got informations from TvMaze");
 		tvMazeCache.set(context.req.query.tvmazeid,show);
-		
+
 		researchTvRage(show,context);
 	}
 }function tvRageResult(err,show)
@@ -257,7 +257,7 @@ function tvMazeResult(err,show)
 			_logger.warn("Error from TvRage 404 Not Found !");
 			context.res.contentType ('text/plain');
 			context.res.status (404);
-			//tvmaze.showSearchName(req.query.name, tvRageResult);	
+			//tvmaze.showSearchName(req.query.name, tvRageResult);
 		}
 		else
 			tvmaze.showInfoTvRage(req.query.rid, tvRageResult);
@@ -266,7 +266,7 @@ function tvMazeResult(err,show)
 	{
 		_logger.debug("Got informations from TvRage");
 		tvRageCache.set(context.req.query.rid,show);
-		
+
 		researchTvRage(show,context);
 	}
 }
@@ -279,7 +279,7 @@ app.get ('/api', function (req, res)
 				req : req,
 				res : res,
 			};
-		
+
 			if(context.req.query.t && context.req.query.t == 'caps')
 
 			{
@@ -292,7 +292,7 @@ app.get ('/api', function (req, res)
 				research( baseUrl + "/torrents/search/"+query ,reponseSearch.bind( {context: context} ),context.req.query);
 			}
 			else if(context.req.query.t && context.req.query.t == 'tvsearch')
-			{						
+			{
 				_logger.debug(context.req.query);
 				if(context.req.query.tvmazeid)
 				{
@@ -303,7 +303,7 @@ app.get ('/api', function (req, res)
 						_logger.debug("TvMaze Cache for "+context.req.query.tvmazeid+" empty, querying tvMaze");
 						tvmaze.showInfoTvMaze(context.req.query.tvmazeid,tvMazeResult.bind({context:context}));
 					}
-					else 
+					else
 					{
 						_logger.debug("TvMaze Cache hit for " +context.req.query.tvmazeid);
 						researchTvRage(cachedShow,context);
@@ -319,7 +319,7 @@ app.get ('/api', function (req, res)
 						_logger.debug("TvRage Cache for "+context.req.query.rid+" empty, querying tvRage");
 						tvmaze.showInfoTvRage(context.req.query.rid,tvRageResult.bind({context:context}));
 					}
-					else 
+					else
 					{
 						_logger.debug("TvRage Cache hit for " +context.req.query.rid);
 						researchTvRage(cachedShow,context);
@@ -332,7 +332,7 @@ app.get ('/api', function (req, res)
 					_logger.debug("Query : " + query);
 					_logger.debug(context.req.query);
 					if(context.req.query.season)
-					{						
+					{
 						var seasonNumber = parseInt(context.req.query.season,10);
 						query +=  "?term["+ _T411_TermsPrefixSeasons.idTerm+"][]="+_T411_TermsPrefixSeasons.values[seasonNumber]+"";
 						if(context.req.query.ep) { // Episode
@@ -363,7 +363,7 @@ app.get ('/torrent/:torrentid',
 				headers:{
 					'Authorization':userToken
 				}
-			}; 
+			};
 			function callBackTorrent (error, response, body)
 			{
 				if (!error && response.statusCode == 200)
@@ -373,12 +373,12 @@ app.get ('/torrent/:torrentid',
 					res.write(body);
 				}
 			}
-			request (requestData).pipe(res);	
+			request (requestData).pipe(res);
 		}
 		else
 		{
 			res.contentType ('text/plain');
-			res.status (404); 
+			res.status (404);
 			res.send ("Torrent not found");
 		}
 	}
@@ -392,16 +392,16 @@ function _toTorznabElement (torrent,currentHostname)
 {
 	return {
 		'item':
-		[	
+		[
 			{title: torrent.name},
-			{guid: torrent.id}, 
+			{guid: torrent.id},
 			{enclosure:{
 					   _attr:{
 						   'url': currentHostname+'/torrent/'+torrent.id, // Download link (via this proxy)
-						   'length': torrent.size, 
+						   'length': torrent.size,
 						   'type':'application/x-bittorrent'
 					   }
-				   }	
+				   }
 			},
 			{'link': currentHostname+'/torrent/'+torrent.id}, // Download link (via this proxy)
 			{'links' : [
@@ -435,16 +435,16 @@ function callbackT411Cats(error,response,body)
 	{
 		var jsonResult = JSON.parse(body);
 
-		var ids = Object.keys(jsonResult); // Get all ids 
+		var ids = Object.keys(jsonResult); // Get all ids
 		ids.forEach( function(idCat) {
-			if(typeof jsonResult[idCat] != 'object' || jsonResult[idCat].name == undefined) 
+			if(typeof jsonResult[idCat] != 'object' || jsonResult[idCat].name == undefined)
 				return;
 			var currentCat = {id:idCat,name: jsonResult[idCat].name,pid:jsonResult[idCat].pid};
 			T411Categories.push(currentCat);
 
 			var idChilds = Object.keys(jsonResult[idCat]['cats']); // Get childs ids
 			idChilds.forEach( function(idChildCat) {
-				if(typeof jsonResult[idCat]['cats'][idChildCat] != 'object' || jsonResult[idCat]['cats'][idChildCat].name == undefined) 
+				if(typeof jsonResult[idCat]['cats'][idChildCat] != 'object' || jsonResult[idCat]['cats'][idChildCat].name == undefined)
 					return;
 				var currentChildCat = {
 					'id':idChildCat,
@@ -478,7 +478,7 @@ function getT411Cats()
 			'Authorization':userToken
 		}
 	};
-	request (requestData,callbackT411Cats); 
+	request (requestData,callbackT411Cats);
 }
 
 
@@ -488,18 +488,18 @@ function callbackT411Terms(error,response,body)
 	if(!error && response.statusCode == 200)
 	{
 		var jsonResult = JSON.parse(body);
-		var ids = Object.keys(jsonResult); // Get category ids 
+		var ids = Object.keys(jsonResult); // Get category ids
 		ids.forEach( function(idCat) {
-			if(typeof jsonResult[idCat] != 'object') 
+			if(typeof jsonResult[idCat] != 'object')
 				return;
 
-			var listTermsCat = [];	
+			var listTermsCat = [];
 			var idTerms = Object.keys(jsonResult[idCat]);
 			idTerms.forEach( function(idTerm) {
-				if(typeof jsonResult[idCat][idTerm] != 'object') 
+				if(typeof jsonResult[idCat][idTerm] != 'object')
 					return;
 
-				var currentTerm = {'name':jsonResult[idCat][idTerm]['type'],'id':idTerm,'values':[]};	
+				var currentTerm = {'name':jsonResult[idCat][idTerm]['type'],'id':idTerm,'values':[]};
 				var idValTerms = Object.keys(jsonResult[idCat][idTerm]['terms']);
 				idValTerms.forEach( function(idValTerm) {
 					currentTerm['values'].push({'val' : jsonResult[idCat][idTerm]['terms'][idValTerm],'id':idValTerm});
@@ -510,8 +510,8 @@ function callbackT411Terms(error,response,body)
 			// Now let's find the category to add the terms to
 			for(var i = 0; i < T411Categories.length ; i++)
 			{
-				if(T411Categories[i].id == idCat)	
-				{	
+				if(T411Categories[i].id == idCat)
+				{
 					T411Categories[i]['terms'] = listTermsCat;
 
 					if(T411Categories[i].id == _T411_CatTVShow.value)
@@ -559,7 +559,7 @@ function getT411Terms()
 			'Authorization':userToken
 		}
 	};
-	request (requestData,callbackT411Terms); 
+	request (requestData,callbackT411Terms);
 }
 
 app.get('/test', function(req, res){
@@ -582,7 +582,7 @@ function callbackLoginT411 (error, response, body)
 		else
 		{
 			_logger.error("Failed to login to T411 : Please verify your credentials in 'config.json'");
-			process.exit(-1);	       
+			process.exit(-1);
 		}
 	}
 	else
