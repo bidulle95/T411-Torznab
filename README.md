@@ -6,17 +6,17 @@ It uses Nodejs
 
 # Installation
 Simply clone this repository
-Then run 
+Then run
 ```
 npm install
 cp config.json.sample config.json
 ```
 Then edit the config.js file to enter your credentials and listen port of the proxy
 
-# Starting application 
+# Starting application
 Simply run :
 ```
-node server.js 
+node server.js
 ```
 Then the proxy is listening on the port specified
 It will try to connect to http://api.t411.ch/ to obtain a token with the credentials set in the server.js file
